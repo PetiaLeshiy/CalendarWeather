@@ -53,11 +53,9 @@ public class DayTemperature implements Serializable {
 
             temp = cell.toString();
             temperature = Integer.valueOf(temp.substring(temp.indexOf("inline;\"")+10, temp.indexOf("</div>")).trim());
-         listTemperature.add(temperature);
+            listTemperature.add(temperature);
         }
-        System.out.println(listTemperature);
-
-}
+        }
 
     public int maxDayTemperature () {
     return  Collections.max(listTemperature);
@@ -77,19 +75,15 @@ public class DayTemperature implements Serializable {
     }
 
     public void saveDayTempObj() {
-        try {
-            ObjectOutputStream objOPS = new ObjectOutputStream(new FileOutputStream(String.format("D:\\Java\\Wather calendar\\%1$s.dat", this.date)));
-        objOPS.writeObject(this);
-       // objOPS.flush();
-        objOPS.close();
+        try (ObjectOutputStream objOPS = new ObjectOutputStream(new FileOutputStream(String.format("D:\\Java\\Wather calendar\\%1$s.dat", this.date)))) {
+            objOPS.writeObject(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static HashMap<String,DayTemperature> loadDayTempObj(){
-        File file = new File("D:\\Java\\Wather calendar");
+        File file = new File("D:\\Java\\Weather calendar");
         String[] listFiles = file.list();
-
         Pattern pattern = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}\\.dat");
         Matcher matcher = null;
         ObjectInputStream objIPS = null;
@@ -101,12 +95,14 @@ public class DayTemperature implements Serializable {
                 System.out.println(listFiles[i] + " не подходящий файл");
                 continue;}
             try {
-                objIPS = new ObjectInputStream(new FileInputStream(String.format("D:\\Java\\Wather calendar\\%1$s", listFiles[i])));
+                objIPS = new ObjectInputStream(new FileInputStream(String.format("D:\\Java\\Weather calendar\\%1$s", listFiles[i])));
                 loadDay = (DayTemperature) objIPS.readObject();
                 mapDayTemperature.put(listFiles[i].substring(0,listFiles[i].indexOf(".dat")),loadDay);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }

@@ -76,10 +76,9 @@ public ConnectionObject(String url) {
         String appendString = "";
         StringBuilder stringBuilder = new StringBuilder(appendString);
 
-    try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(this.connection.getInputStream()))){
             while ((appendString = reader.readLine()) != null){
-                stringBuilder.append(appendString);
+            stringBuilder.append(appendString);
             }
         } catch (IOException e) {
             e.printStackTrace();
