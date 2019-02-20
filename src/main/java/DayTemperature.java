@@ -86,7 +86,6 @@ public class DayTemperature implements Serializable {
         String[] listFiles = file.list();
         Pattern pattern = Pattern.compile("^\\d{2}\\.\\d{2}\\.\\d{4}\\.dat");
         Matcher matcher = null;
-        ObjectInputStream objIPS = null;
         DayTemperature loadDay = null;
         HashMap<String, DayTemperature> mapDayTemperature = new HashMap<>();
         for (int i = 0; i < listFiles.length; i ++) {
@@ -94,8 +93,8 @@ public class DayTemperature implements Serializable {
             if (!matcher.matches()){
                 System.out.println(listFiles[i] + " не подходящий файл");
                 continue;}
-            try {
-                objIPS = new ObjectInputStream(new FileInputStream(String.format("D:\\Java\\Weather calendar\\%1$s", listFiles[i])));
+            try ( ObjectInputStream objIPS = new ObjectInputStream(new FileInputStream(String.format("D:\\Java\\Weather calendar\\%1$s", listFiles[i])))) {
+
                 loadDay = (DayTemperature) objIPS.readObject();
                 mapDayTemperature.put(listFiles[i].substring(0,listFiles[i].indexOf(".dat")),loadDay);
             }
