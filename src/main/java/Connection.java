@@ -1,4 +1,6 @@
 
+import dayTemperature.DayTemperatureRP5;
+
 import java.net.*;
 
 public class Connection {
@@ -10,12 +12,13 @@ public class Connection {
         ConnectionObject connectionObject = new ConnectionObject(urlString);
         connectionObject.connection();
         String pageContent = connectionObject.getPageContent();
-        DayTemperature dayTemperature = new DayTemperature(connectionObject.getDate());
+
+        DayTemperatureRP5 dayTemperature = new DayTemperatureRP5(connectionObject.getDate());
         dayTemperature.doListTemperature(pageContent);
 //save temperature of yesterday
         dayTemperature.saveDayTempObj();
 //load all saved days
-        System.out.println(DayTemperature.loadDayTempObj().keySet());
+        System.out.println(DayTemperatureRP5.loadDayTempObj().keySet());
     }
     }
 
